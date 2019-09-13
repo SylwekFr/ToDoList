@@ -1,1 +1,28 @@
-<p> here will be a map which indicate a area and if a adress is in the area or not </p>
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>My TDL</title>
+        <style>
+            a {text-decoration: none; color: black;}
+        </style>
+    </head>
+
+    <body>
+        <h1>My ToDoList</h1>
+
+        <ul>
+        <% todolist.forEach(function(todo, index) { %>
+            <li><a href="/delete/<%= index %>">✘</a> <%= todo %></li>
+        <% }); %>
+        </ul>
+
+        <form action="/add/" method="post">
+            <p>
+                <label for="newtodo">Anything else to do ?</label>
+                <input type="text" name="addtodo" id="addtodo" autofocus />
+                <input type="submit" />
+            </p>
+        </form>
+    </body>
+</html>

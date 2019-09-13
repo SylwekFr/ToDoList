@@ -15,13 +15,13 @@ app.use(session({secret: 'todolistinsession'}))
 .get('/', function(req, res) {
     res.render('todolist.ejs', {todolist: req.session.todolist});
 })
-.post('/ajouter/', encodedUrl, function(req, res) {
+.post('/add/', encodedUrl, function(req, res) {
     if (req.body.addtodo !=''){
-        req.session.todolist.push(req.body.newtodo);
+        req.session.todolist.push(req.body.addtodo);
     }
     res.redirect('/');
 })
-.get('/supprimer/:index', function(req, res) {
+.get('/delete/:index', function(req, res) {
     if (req.param.index != '') {
         req.session.todolist.splice(req.params.index, 1);
     }
