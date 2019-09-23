@@ -5,3 +5,4 @@ For run this application please go on the root folder open your console and run 
 then :  
 `node server.js`  
 then open your favorite navigator and go to localhost:8080  
+ps: shared to do list doesn't work yet

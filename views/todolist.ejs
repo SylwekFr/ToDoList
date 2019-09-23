@@ -3,21 +3,25 @@
 <html>
     <head>
         <title>My TDL</title>
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
         <style>
             a {text-decoration: none; color: black;}
         </style>
     </head>
 
     <body>
-        <h1>My ToDoList</h1>
-
+        <header class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4 text-center font-weight-bold">My ToDoList</h1>
+            </div>
+        </header>
         <ul>
         <% todolist.forEach(function(todo, index) { %>
-            <li><a href="/delete/<%= index %>">✘</a> <%= todo %></li>
+            <li><a href="/private/delete/<%= index %>">✘</a> <%= todo %></li>
         <% }); %>
         </ul>
 
-        <form action="/add/" method="post">
+        <form action="/private/add/" method="post">
             <p>
                 <label for="newtodo">Anything else to do ?</label>
                 <input type="text" name="addtodo" id="addtodo" autofocus />
