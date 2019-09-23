@@ -41,8 +41,8 @@
                 let socket = io.connect('http://localhost:8080/shared/');
                 var pseudo = prompt('Enter your username :');
                 socket.emit('user', pseudo);
-                socket.on('connected', function() {
-                $('#todolistmembers').append("<li class='list-group-item list-group-item-info'>"+ pseudo+'</li>');
+                socket.on('connected', function(data) {
+                    $('#todolistmembers').append("<li class='list-group-item list-group-item-info'>"+ pseudo+'</li>');
                 })
                 socket.on('user', function(pseudo) {
                 $('#todolistmembers').append("<li class='list-group-item list-group-item-light'>"+ pseudo+'</li>');

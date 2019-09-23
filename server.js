@@ -48,17 +48,21 @@ app.use(session({secret: 'todolistinsession'}))
 .use(function(req, res, next){
     res.redirect('/')
 });
+let pseudoarray=[];
+let taskarray=[];
 shared.use(sharedsession(iosession))
 shared.on('connection', function (socket, pseudo) {
-    socket.emit('connected');
+    socket.emit('connected', {pseudos: pseudoarray, tasks: taskarray});
     socket.on('user', function(pseudo){
         pseudo=ent.encode(pseudo);
+        pseudoarray.push(pseudo);
         socket.handshake.session.pseudo = pseudo;
         socket.handshake.session.save();
         socket.broadcast.emit('user', socket.handshake.session.pseudo)
     })
     socket.on('task', function(task){
         task=ent.encode(task);
+        taskarray.push(task);
         socket.broadcast.emit('task', {task : task});
     })
 });
