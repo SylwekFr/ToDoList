@@ -33,8 +33,8 @@ app.use(session({secret: 'todolistinsession'}))
     }
     res.redirect('/private/');
 })
-.get('/shared', function (req, res) {
-    res.sendFile('view/shared.html' , { root : __dirname});
+.get('/shared/', function (req, res) {
+    res.sendFile('views/shared.html' , { root : __dirname});
   })
 .use(function(req, res, next){
     res.redirect('/')
