@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Shared TDL</title>
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <header class="jumbotron jumbotron-fluid">
+            <div class="container">
+                    <h1 class="display-4 text-center font-weight-bold">Shared to do list</h1>
+            </div>
+        </header>
+            <div class='container'>
+                <div class= row>
+                    <ul id="todolistlist" class="offset-lg-2 col-lg-8 list-group list-group-flush">
+                    </ul>
+                    <section class="offset-lg-1 col-lg-1">
+                        <p>connected:</p>    
+                        <ul id="todolistmembers" class="list-group">
+                        </ul>
+                    </section>
+                </div>
+                <form id='addtask' method='post' class="form-inline offset-lg-2 mb-3 col-lg-8 align-items-center">
+                    <div class="input-group w-100" >
+                        <div class="input-group-prepend">
+                            <label id="basic-addon3" class="input-group-text" for="addtodo">What to do ?</label>
+                        </div>
+                        <input type="text" id="task" class="form-control" style="text-align:right" name="addtodo" id="addtodo" autofocus />
+                        <span class="input-group-append">
+                            <input type="submit" class="btn btn-primary" value="add"/>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <script src="/js/jquery.min.js"></script>
+            <script src="/socket.io/socket.io.js"></script>
+            <script src="/js/bootstrap.min.js"></script>
+            <script>
+                let socket = io.connect('http://localhost:8080/shared/');
+                var pseudo = prompt('Enter your username :');
+                socket.emit('user', pseudo);
+                socket.on('connected', function() {
+                $('#todolistmembers').append("<li class='list-group-item list-group-item-info'>"+ pseudo+'</li>');
+                })
+                socket.on('user', function(pseudo) {
+                $('#todolistmembers').append("<li class='list-group-item list-group-item-light'>"+ pseudo+'</li>');
+                })
+                socket.on('task', function(data) {
+                    printothertask(data.task);
+                })
+                $('#addtask').submit(function() {
+                let task=$('#task').val();
+                socket.emit('task', task);
+                printmytask(task);
+                $('#task').val('').focus();
+                return false;
+                });
+                function printmytask(task) {
+                    $('#todolistlist').append("<li class='list-group-item'> <a class='text-danger' href='#'>✘</a> <span class='text-info'>"+task+'</span></li>');
+                }
+                function printothertask(task) {
+                    $('#todolistlist').append("<li class='list-group-item'> <a class='text-danger' href='#'>✘</a> <span class='text-dark'>"+task+'</span></li>');
+                }
+            </script>
+    </body>
+</html>

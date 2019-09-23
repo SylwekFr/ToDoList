@@ -1,11 +1,20 @@
-var express = require('express');
-var app = express();
-let server = require('http').createServer(app);
-var session = require('cookie-session');
-var bodyParser = require('body-parser');
-let io = require('socket.io').listen(server);
-var encodedUrl = bodyParser.urlencoded({ extended: false });
+let express = require('express');
+let app = express();
+let server = require('http').Server(app);
+let ent = require('ent');
+let session = require('cookie-session');
+let iosession = require('express-session')({
+    secret: 'pseudo',
+    resave: true,
+     saveUninitialized: true
+    });
+let sharedsession = require("express-socket.io-session");
+let bodyParser = require('body-parser');
+let io = require('socket.io')(server);
+let shared = io.of('/shared/');
+let encodedUrl = bodyParser.urlencoded({ extended: false });
 app.use(session({secret: 'todolistinsession'}))
+.use(iosession)
 .use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'))
 .use('/js', express.static(__dirname + '/node_modules/jquery/dist'))
 .use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -34,9 +43,23 @@ app.use(session({secret: 'todolistinsession'}))
     res.redirect('/private/');
 })
 .get('/shared/', function (req, res) {
-    res.sendFile('views/shared.html' , { root : __dirname});
+    res.render('shared.ejs');
   })
 .use(function(req, res, next){
     res.redirect('/')
+});
+shared.use(sharedsession(iosession))
+shared.on('connection', function (socket, pseudo) {
+    socket.emit('connected');
+    socket.on('user', function(pseudo){
+        pseudo=ent.encode(pseudo);
+        socket.handshake.session.pseudo = pseudo;
+        socket.handshake.session.save();
+        socket.broadcast.emit('user', socket.handshake.session.pseudo)
+    })
+    socket.on('task', function(task){
+        task=ent.encode(task);
+        socket.broadcast.emit('task', {task : task});
+    })
 });
 server.listen(8080);
