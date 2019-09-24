@@ -40,38 +40,53 @@
             <script>
                 let socket = io.connect('http://localhost:8080/shared/');
                 let pseudo = prompt('Enter your username :');
+                let counteruser =0;
                 socket.emit('user', pseudo);
                 socket.on('connected', function(data) {
-                    console.log("you're connected");
                     pseudos=data.unames;
                     tasks=data.tasks
                     let i;
                     for (i = 0; i < pseudos.length; ++i) {
-                        $('#todolistmembers').append("<li class='list-group-item list-group-item-light'>"+ pseudos[i]+'</li>');
+                        $('#todolistmembers').append("<li id='user"+counteruser+"' class='list-group-item list-group-item-light'>"+ pseudos[i]+'</li>');
+                        counteruser++;
                     }
                     for (i = 0; i < tasks.length; ++i) {
                         printothertask(data.tasks[i]);
                     }
-                    $('#todolistmembers').append("<li class='list-group-item list-group-item-info'>"+ pseudo+'</li>');
+                    $('#todolistmembers').append("<li id='user"+counteruser+"' class='list-group-item list-group-item-info'>"+ pseudo+'</li>');
+                    counteruser++;
                 })
                 socket.on('user', function(pseudo) {
-                    $('#todolistmembers').append("<li class='list-group-item list-group-item-light'>"+ pseudo+'</li>');
+                    $('#todolistmembers').append("<li id='user"+counteruser+"' class='list-group-item list-group-item-light'>"+ pseudo+'</li>');
+                    counteruser++;
                 })
                 socket.on('task', function(data) {
                     printothertask(data.task);
                 })
+                socket.on('delete', function(data) {
+                    removetask(data.index);
+                })
                 $('#addtask').submit(function() {
-                let task=$('#task').val();
-                socket.emit('task', task);
-                printmytask(task);
-                $('#task').val('').focus();
-                return false;
+                    let task=$('#task').val();
+                    socket.emit('task', task);
+                    printmytask(task);
+                    $('#task').val('').focus();
+                    return false;
+                });
+                $('#todolistlist').on ("click", ".deleter", function () {
+                    let litask=$(this).parent();
+                    var index = $( "li" ).index(litask);
+                    socket.emit('delete', index);
+                    removetask(index);
                 });
                 function printmytask(task) {
-                    $('#todolistlist').append("<li class='list-group-item'><button type=\"button\" class=\"btn btn-outline-danger btn-sm\">✘</button><span class='text-info'> "+task+'</span></li>');
+                    $('#todolistlist').append("<li class='list-group-item'><button type='button' class='btn btn-outline-danger btn-sm deleter'>✘</button><span class='text-info'> "+task+'</span></li>');
                 }
                 function printothertask(task) {
-                    $('#todolistlist').append("<li class='list-group-item'><button type=\"button\" class=\"btn btn-outline-danger btn-sm\">✘</button><span class='text-dark'> "+task+'</span></li>');
+                    $('#todolistlist').append("<li class='list-group-item'><button type='button' class='btn btn-outline-danger btn-sm deleter'>✘</button><span class='text-dark'> "+task+'</span></li>');
+                }
+                function removetask(index){
+                    $('#todolistlist li').get(index).remove();
                 }
             </script>
     </body>

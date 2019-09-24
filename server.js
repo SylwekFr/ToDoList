@@ -65,5 +65,9 @@ shared.on('connection', function (socket, pseudo) {
         taskarray.push(task);
         socket.broadcast.emit('task', {task : task});
     })
+    socket.on('delete', function(index){
+        taskarray.splice(index);
+        socket.broadcast.emit('delete', {index : index});
+    })
 });
 server.listen(8080);
