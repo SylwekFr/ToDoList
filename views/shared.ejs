@@ -66,6 +66,9 @@
                 socket.on('delete', function(data) {
                     removetask(data.index);
                 })
+                socket.on('diconnected', function(data){
+                    $('#todolistmembers li').get(data.index).remove();
+                });
                 $('#addtask').submit(function() {
                     let task=$('#task').val();
                     socket.emit('task', task);

@@ -69,5 +69,16 @@ shared.on('connection', function (socket, pseudo) {
         taskarray.splice(index);
         socket.broadcast.emit('delete', {index : index});
     })
+    socket.on('disconnect', function(){
+        let user=socket.handshake.session.pseudo;
+        let index;
+        for( var i = 0; i < pseudoarray.length; i++){
+            if ( pseudoarray[i] == user) {
+                pseudoarray.splice(i);
+                index=i;
+            }
+        }
+        socket.broadcast.emit("diconnected", {index:index});
+    });
 });
 server.listen(8080);
