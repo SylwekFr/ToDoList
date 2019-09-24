@@ -52,7 +52,7 @@ let pseudoarray=[];
 let taskarray=[];
 shared.use(sharedsession(iosession))
 shared.on('connection', function (socket, pseudo) {
-    socket.emit('connected', {pseudos: pseudoarray, tasks: taskarray});
+    socket.emit('connected', {unames: pseudoarray, tasks: taskarray});
     socket.on('user', function(pseudo){
         pseudo=ent.encode(pseudo);
         pseudoarray.push(pseudo);

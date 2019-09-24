@@ -39,13 +39,23 @@
             <script src="/js/bootstrap.min.js"></script>
             <script>
                 let socket = io.connect('http://localhost:8080/shared/');
-                var pseudo = prompt('Enter your username :');
+                let pseudo = prompt('Enter your username :');
                 socket.emit('user', pseudo);
                 socket.on('connected', function(data) {
+                    console.log("you're connected");
+                    pseudos=data.unames;
+                    tasks=data.tasks
+                    let i;
+                    for (i = 0; i < pseudos.length; ++i) {
+                        $('#todolistmembers').append("<li class='list-group-item list-group-item-light'>"+ pseudos[i]+'</li>');
+                    }
+                    for (i = 0; i < tasks.length; ++i) {
+                        printothertask(data.tasks[i]);
+                    }
                     $('#todolistmembers').append("<li class='list-group-item list-group-item-info'>"+ pseudo+'</li>');
                 })
                 socket.on('user', function(pseudo) {
-                $('#todolistmembers').append("<li class='list-group-item list-group-item-light'>"+ pseudo+'</li>');
+                    $('#todolistmembers').append("<li class='list-group-item list-group-item-light'>"+ pseudo+'</li>');
                 })
                 socket.on('task', function(data) {
                     printothertask(data.task);
@@ -58,10 +68,10 @@
                 return false;
                 });
                 function printmytask(task) {
-                    $('#todolistlist').append("<li class='list-group-item'> <a class='text-danger' href='#'>✘</a> <span class='text-info'>"+task+'</span></li>');
+                    $('#todolistlist').append("<li class='list-group-item'><button type=\"button\" class=\"btn btn-outline-danger btn-sm\">✘</button><span class='text-info'> "+task+'</span></li>');
                 }
                 function printothertask(task) {
-                    $('#todolistlist').append("<li class='list-group-item'> <a class='text-danger' href='#'>✘</a> <span class='text-dark'>"+task+'</span></li>');
+                    $('#todolistlist').append("<li class='list-group-item'><button type=\"button\" class=\"btn btn-outline-danger btn-sm\">✘</button><span class='text-dark'> "+task+'</span></li>');
                 }
             </script>
     </body>
