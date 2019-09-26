@@ -38,8 +38,8 @@
             <script src="/socket.io/socket.io.js"></script>
             <script src="/js/bootstrap.min.js"></script>
             <script>
-                let socket = io.connect('http://localhost:8080/shared/');
                 let pseudo = prompt('Enter your username :');
+                let socket = io.connect('http://localhost:8080/shared/');
                 let counteruser =0;
                 socket.emit('user', pseudo);
                 socket.on('connected', function(data) {
