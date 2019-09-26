@@ -66,7 +66,7 @@ shared.on('connection', function (socket, pseudo) {
         socket.broadcast.emit('task', {task : task});
     })
     socket.on('delete', function(index){
-        taskarray.splice(index);
+        taskarray.splice(index,1);
         socket.broadcast.emit('delete', {index : index});
     })
     socket.on('disconnect', function(){
@@ -74,7 +74,7 @@ shared.on('connection', function (socket, pseudo) {
         let index;
         for( var i = 0; i < pseudoarray.length; i++){
             if ( pseudoarray[i] == user) {
-                pseudoarray.splice(i);
+                pseudoarray.splice(i,1);
                 index=i;
             }
         }
