@@ -72,7 +72,7 @@ shared.on('connection', function (socket, pseudo) {
     socket.on('disconnect', function(){
         let user=socket.handshake.session.pseudo;
         let index;
-        for( var i = 0; i < pseudoarray.length; i++){
+        for( let i = 0; i < pseudoarray.length; i++){
             if ( pseudoarray[i] == user) {
                 pseudoarray.splice(i,1);
                 index=i;
