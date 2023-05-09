@@ -1,7 +1,7 @@
-let express = require('express');
-let app = express();
-let server = require('http').Server(app);
-let ent = require('ent');
+const express = require('express');
+const app = express();
+const server = require('http').Server(app);
+const ent = require('ent');
 let session = require('cookie-session');
 let iosession = require('express-session')({
     secret: 'pseudo',
