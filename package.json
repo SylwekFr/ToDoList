@@ -3,7 +3,7 @@
     "description": "a basic to do list",
     "version": "0.1.0",
     "scripts": {
-        "start": "node server.js"
+        "start": "node app.js"
     },
     "license": "MIT",
     "dependencies": {
