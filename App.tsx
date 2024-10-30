@@ -11,10 +11,11 @@ import { PaperProvider } from 'react-native-paper';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import HomeScreen from './src/screens/HomeScreen';
-import ToDoScreen from './src/screens/ToDoScreen';
-import PeerScreen from './src/screens/PeerScreen';
-import NavigationBar from './src/components/NavigationBar';
+import HomeScreen from './src/presentation/screens/HomeScreen';
+import ToDoScreen from './src/presentation/screens/ToDoScreen';
+import PeerScreen from './src/presentation/screens/PeerScreen';
+import { configureDependencies } from './src/module/toDoModule';
+import NavigationBar from './src/presentation/components/NavigationBar';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ const Stack = createNativeStackNavigator();
 
 
 function App(): React.JSX.Element {
+  configureDependencies()
   return (
     <PaperProvider>
       <SafeAreaProvider>
