@@ -4,7 +4,7 @@ import { ToDo } from '../../domain/entities/ToDo';
 import {v4 as uuidv4} from 'uuid';
 import { ScrollView, View } from 'react-native';
 import { container } from 'tsyringe';
-import { AddToDos } from '../../application/usecases/AddToDo';
+import { AddToDo } from '../../application/usecases/AddToDo';
 
 interface ToDoDialogProps {
   visible: boolean;
@@ -34,7 +34,7 @@ const ToDoDialog: React.FC<ToDoDialogProps> = ({ visible, onDismiss }) => {
     setToDo({ ...toDo, tasks: updatedTasks });
   };
 
-  const addToDoUseCase = container.resolve(AddToDos);
+  const addToDoUseCase = container.resolve(AddToDo);
   const addToDo = async() => {
     try{
       await addToDoUseCase.execute(toDo)

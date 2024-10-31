@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, List, Text } from 'react-native-paper';
+import { Button, IconButton, List, Text } from 'react-native-paper';
 import { container } from 'tsyringe';
 import { SafeAreaView } from 'react-native-safe-area-context/lib/typescript/src/SafeAreaView';
 import { GetAllToDos } from '../../application/usecases/GetAllTodos';
 import { ToDo } from '../../domain/entities/ToDo';
 import { StyleSheet } from 'react-native';
 import AddToDoDialog from '../components/AddToDoDialog';
+import { RemoveToDo } from '../../application/usecases/RemoveToDo';
 
 
 function HomeScreen(): React.JSX.Element {
@@ -14,6 +15,16 @@ function HomeScreen(): React.JSX.Element {
   const hideAddDialog = () => setAddDialogVisible(false);
   const [toDos, setToDos] = useState<Partial<ToDo>[]>([]);
   const getAllToDosUseCase = container.resolve(GetAllToDos);
+  const removeToDoUseCase = container.resolve(RemoveToDo);
+  
+  const removeToDo = async(id:string) => {
+    try{
+      await removeToDoUseCase.execute(id)
+    } catch(error){
+      console.error('Error removing ToDo:', error)
+    }
+  }
+    
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -28,6 +39,14 @@ function HomeScreen(): React.JSX.Element {
         {toDos.map((toDo) => (
           <List.Item
             key={toDo.id}
+            right={ props =>
+              <IconButton
+                {...props}
+                icon="delete"
+                onPress={() => removeToDo(toDo.id)}
+                size={24}
+              />
+            }
             title={
               <Text
                 style={[

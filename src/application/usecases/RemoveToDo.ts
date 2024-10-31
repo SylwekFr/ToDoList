@@ -4,10 +4,10 @@ import { ToDo } from '../../domain/entities/ToDo';
 
 
 @injectable()
-export class GetAllToDos {
+export class RemoveToDo {
   constructor(@inject('ToDoRepository') private toDoRepository: ToDoRepository) {}
 
-  async execute(): Promise<Partial<ToDo>[]> {
-    return this.toDoRepository.getAllToDos();
+  async execute(id: string): Promise<void> {
+    return this.toDoRepository.deleteToDo(id);
   }
 }

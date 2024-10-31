@@ -4,8 +4,8 @@ import { ToDo } from '../../domain/entities/ToDo';
 
 
 @injectable()
-export class AddToDos {
-  constructor(@inject('TaskRepository') private toDoRepository: ToDoRepository) {}
+export class AddToDo {
+  constructor(@inject('ToDoRepository') private toDoRepository: ToDoRepository) {}
 
   async execute(toDo: ToDo): Promise<void> {
     return this.toDoRepository.createToDo(toDo);
